@@ -41,8 +41,8 @@ app.get('/site.html', function(req, res) {
 
 // There will be a test page available on the /test path of your server url
 // Remove this before launching your app
-app.get('/test', function(req, res) {
-  res.sendFile(path.join(__dirname, '/public/test.html'));
+app.get('/', function(req, res) {
+  res.sendFile(path.join(__dirname, '/public/site.html'));
 });
 
 var port = process.env.PORT || 1337;
@@ -53,3 +53,24 @@ httpServer.listen(port, function() {
 
 // This will enable the Live Query real-time server
 ParseServer.createLiveQueryServer(httpServer);
+
+var SupernaturalSoda = Parse.Object.extend("SupernaturalSoda");
+
+app.post('/save', function SodaFactory(attributes) {
+  var supernaturalSoda = new SupernaturalSoda();
+  for (attribute in attributes) {
+    supernaturalSoda.set(attribute, attributes[attribute]);
+  }
+    // Sets attributes of the new soda
+  supernaturalSoda.save(null, {
+    success: function(supernaturalSoda) {
+    // Execute any logic that should take place after the object is saved.
+      console.log(supernaturalSoda);
+    },
+      error: function(supernaturalSoda, error) {
+       // Execute any logic that should take place if the save fails.
+      // error is a Parse.Error with an error code and message.
+        console.log('Failed to create new object, with error code: ' + error.message);
+      }
+    });   
+}

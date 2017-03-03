@@ -6,14 +6,13 @@
     <div style="color:#0000FF">
     	<h2>Add a soda to the inventory</h2>
     	<p>Every soda must have a name and a quantity.<p>
-    	<form onsubmit="SodaFactory()">
+    	<form action="http://supernatural-sodas-parse.herokuapp.com/save">
     		Soda Name:<br>
-    		<input type="text" name="Something fresh..."><br>
+    		<input type="text" name="sodaName"><br>
     		Quantity:<br>
-    		<input type="text" name="How many you got?"><br>
+    		<input type="text" name="sodaQuantity"><br>
     		<input type="submit" value="Add It"><br><br>
     	</form>
     </div>
-<script src="/inventory.js"></script>
 </body>
 </html>
