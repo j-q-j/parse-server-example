@@ -1,8 +1,9 @@
 var Parse = require('parse/node');
 
-Parse.initialize("myAppId");
-Parse.serverURL = 'http://localhost:1337/parse'
-Parse.masterKey = 'frfnieurnfddc4rf34fe'
+Parse.initialize("Sup3rS0da");
+Parse.serverURL = 'http://supernatural-sodas-parse.herokuapp.com/parse';
+Parse.masterKey = 'frfnieurnfddc4rf34fe';
+Parse.databaseUri = 'mongodb://heroku_wlwgjx3v:p1kehucb5fepar9dd1var490lu@ds113650.mlab.com:13650/heroku_wlwgjx3v';
 
 ////////////// SODAS //////////////////////
 
@@ -11,9 +12,9 @@ Parse.masterKey = 'frfnieurnfddc4rf34fe'
 // // Creates the new soda
 // var supernaturalSoda = new SupernaturalSoda();
 
-// Sets attributes of the new soda
-// supernaturalSoda.set("sodaName", "Grapefruit");
-// supernaturalSoda.set("sodaQuantity", 3);
+// // Sets attributes of the new soda
+// supernaturalSoda.set("sodaName", "Apple");
+// supernaturalSoda.set("sodaQuantity", 4);
 
 // supernaturalSoda.save(null, {
 // 	success: function(supernaturalSoda) {
@@ -27,37 +28,16 @@ Parse.masterKey = 'frfnieurnfddc4rf34fe'
 //   }
 // });
 
-
-var GameScore = Parse.Object.extend("GameScore");
-var gameScore = new GameScore();
-
-gameScore.set("score", 1337);
-gameScore.set("playerName", "Sean Plott");
-gameScore.set("cheatMode", false);
-
-gameScore.save(null, {
-  success: function(gameScore) {
-    // Execute any logic that should take place after the object is saved.
-    console.log(gameScore);
-  },
-  error: function(gameScore, error) {
-    // Execute any logic that should take place if the save fails.
-    // error is a Parse.Error with an error code and message.
-    console.log('Failed to create new object, with error code: ' + error.message);
-  }
-});
-
-console.log(gameScore);
-
 //////////// GET IT BACK //////////
-// var SupernaturalSoda = Parse.Object.extend("SupernaturalSoda");
-// var query = new Parse.Query(SupernaturalSoda);
-// query.equalTo("objectId", "rwoIWWtG4B");
-// query.find({
-// 	success: function(results) {
-// 		console.log("There are only " + supernaturalSoda.sodaQuantity + " left!" );
-// 	},
-// 	error: function(error) {
-// 		console.log("Error: " + error.code + " " + error.message);
-// 	}
-// });
+var SupernaturalSoda = Parse.Object.extend("SupernaturalSoda");
+var query = new Parse.Query(SupernaturalSoda);
+query.get("3zfG4OOtMG", {
+	success: function(supernaturalSoda) {
+		// The object was retrieved successfully
+		console.log(supernaturalSoda.get("sodaQuantity"))
+	},
+	error: function(object, error) {
+		// The object was not retrieved succesffully
+		console.log("Error: " + error.code + " " + error.message);
+	}
+});
