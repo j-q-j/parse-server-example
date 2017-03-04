@@ -1,17 +1,29 @@
 <html>
 <head>
+    <!doctype html>
+    <meta charset=”utf-8”>
     <title>Supernatural Sodas</title>
 </head>
 <body>
     <div style="color:#0000FF">
     	<h2>Add a soda to the inventory</h2>
     	<p>Every soda must have a name and a quantity.<p>
-    	<form action="http://supernatural-sodas-parse.herokuapp.com/save">
+    	<form action="/save" method="post">
     		Soda Name:<br>
     		<input type="text" name="sodaName"><br>
     		Quantity:<br>
-    		<input type="text" name="sodaQuantity"><br>
+    		<input type="number" name="sodaQuantity"><br>
     		<input type="submit" value="Add It"><br><br>
+    	</form>
+    </div>
+    <p>
+    <p>
+    <div style="color:#0000FF">
+    	<h2> All of the sodas available now</h2>
+    	<p>
+    	<form action="/inventory" method="get">
+    		<input type="submit" value="Check the stock">
+    		<br><br>
     	</form>
     </div>
 </body>

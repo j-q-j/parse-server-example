@@ -31,27 +31,14 @@ function SodaFactory(attributes) {
     });		
 }
 
-var newFlavour = {
-	sodaName: "Chocolate",
-	sodaQuantity: 174
-}
 
-var newSoda = SodaFactory(newFlavour);
+// Example of a new flavour 
+var newFlavour = {sodaName: "Banana", sodaQuantity: 16}
+var newSoda = SodaFactory(newFlavour)
 
+//////////// GET IT BACK //////////
 
-// supernaturalSoda.save(null, {
-// 	success: function(supernaturalSoda) {
-// 	// Execute any logic that should take place after the object is saved.
-// 	console.log(supernaturalSoda);
-// 	},
-//   	error: function(supernaturalSoda, error) {
-//     // Execute any logic that should take place if the save fails.
-//     // error is a Parse.Error with an error code and message.
-//     console.log('Failed to create new object, with error code: ' + error.message);
-//   }
-// });
-
-// //////////// GET IT BACK //////////
+// function SodaInventory()
 // var SupernaturalSoda = Parse.Object.extend("SupernaturalSoda");
 // var query = new Parse.Query(SupernaturalSoda);
 // query.get("3zfG4OOtMG", {
@@ -64,3 +51,13 @@ var newSoda = SodaFactory(newFlavour);
 // 		console.log("Error: " + error.code + " " + error.message);
 // 	}
 // });
+
+
+  // Parse.Object.fetchAll([object1, object2, ...], {
+  //   success: function(list) {
+  //     // All the objects were fetched.
+  //   },
+  //   error: function(error) {
+  //     // An error occurred while fetching one of the objects.
+  //   },
+  // });

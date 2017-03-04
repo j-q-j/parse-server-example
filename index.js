@@ -27,6 +27,12 @@ if (!databaseUri) {
 
 var app = express();
 
+var bodyParser = require('body-parser')
+app.use( bodyParser.json() );       // to support JSON-encoded bodies
+app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+  extended: true
+})); 
+
 // Serve static assets from the /public folder
 app.use('/public', express.static(path.join(__dirname, '/public')));
 
@@ -54,23 +60,55 @@ httpServer.listen(port, function() {
 // This will enable the Live Query real-time server
 ParseServer.createLiveQueryServer(httpServer);
 
-var SupernaturalSoda = Parse.Object.extend("SupernaturalSoda");
-
-app.post('/save', function SodaFactory(attributes) {
-  var supernaturalSoda = new SupernaturalSoda();
-  for (attribute in attributes) {
-    supernaturalSoda.set(attribute, attributes[attribute]);
+// Creat class Supernatural Sodas
+var SupernaturalSodas = Parse.Object.extend("SupernaturalSodas"); 
+// Process equest to create a new supernaturalSodas
+app.post('/save', function(req, res) {
+  // create new instance of Class
+  var supernaturalSodas = new SupernaturalSodas();
+  // write attributes to instance of class
+  for (object in req.body) {
+        supernaturalSodas.set(object, req.body[object]);
   }
-    // Sets attributes of the new soda
-  supernaturalSoda.save(null, {
-    success: function(supernaturalSoda) {
-    // Execute any logic that should take place after the object is saved.
-      console.log(supernaturalSoda);
+  // save class instance
+  supernaturalSodas.save(null, {
+    success: function(supernaturalSodas) {
+      // Execute any logic that should take place after the object is saved.
+      console.log(supernaturalSodas);
+      res.sendStatus(200);
     },
-      error: function(supernaturalSoda, error) {
+    error: function(supernaturalSodas, error) {
        // Execute any logic that should take place if the save fails.
       // error is a Parse.Error with an error code and message.
-        console.log('Failed to create new object, with error code: ' + error.message);
+      console.log('Failed to create new object, with error code: ' + error.message);
+    }
+  });
+});
+
+// Get a list of names and quantities of all the SupernaturalSodas
+app.get('/inventory', function(req, res) {
+  // creates new search
+  var query = new Parse.Query(SupernaturalSodas);
+  // limits the results by the criteria
+  // query.greaterThan("sodaQuantity", 0);
+  query.find({
+    success: function(results) {
+      console.log("Successfully retrieved " + results.length + " Sodas");
+      // Do something with the returned Parse.Object values
+      for (var i = 0; i < results.length; i++) {
+        var object = results[i];
+        console.log(object.id + ' - ' + object.get('sodaName') + ' - ' + object.get('sodaQuantity'));
+        res.sendStatus(200);
       }
-    });   
-}
+    },
+    error: function(error) {
+      alert("Error: " + error.code + " " + error.message);
+    }
+  });
+});
+
+
+
+
+
+
