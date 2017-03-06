@@ -5,6 +5,7 @@ var express = require('express');
 var ParseServer = require('parse-server').ParseServer;
 var path = require('path');
 var jquery = require("jquery");
+var jquery.tabulator = require ("jquery.tabulator");
 
 var databaseUri = process.env.DATABASE_URI || 'mongodb://heroku_rtzfhkmq:go3abk4dfibc9gniqndvoclhdd@ds133328.mlab.com:33328/heroku_rtzfhkmq';
 
@@ -41,15 +42,15 @@ app.use('/public', express.static(path.join(__dirname, '/public')));
 var mountPath = process.env.PARSE_MOUNT || '/parse';
 app.use(mountPath, api);
 
-// Parse Server plays nicely with the rest of your web routes
-app.get('/site.html', function(req, res) {
-  res.status(200).send('I dream of being a website.  Please star the parse-server repo on GitHub!');
-});
-
 // There will be a test page available on the /test path of your server url
 // Remove this before launching your app
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, '/public/site.html'));
+});
+
+// Parse Server plays nicely with the rest of your web routes
+app.get('/', function(req, res) {
+  res.status(200).send('I dream of being a website.  Please star the parse-server repo on GitHub!');
 });
 
 var port = process.env.PORT || 1337;
