@@ -2,13 +2,23 @@
 <html>
 <head>
 <meta charset=”utf-8”>
+<style>
+table, th, td {
+    border: 1px solid black;
+}
+</style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script >
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+<script>
 $.getJSON("/inventory", function(data) {
     // Get the element with id summary and set the inner text to the result.
-    $('#sodainventory').text(JSON.stringify(data));
-    console.log(data);
-});	
+	response = $.parseJSON(JSON.stringify(data));
+	$.each(response, function(i, item) {
+    	$('<tr>').html("<td>" + response[i].sodaName + "</td><td>" + response[i].sodaQuantity + "</td>").appendTo('#records_table');
+});
+});
 </script>
 </head>
 <body>
@@ -28,6 +38,17 @@ $.getJSON("/inventory", function(data) {
 <p>
 <h2> All of the sodas available now</h2>
 <p>
-<div id="sodainventory"></div>
+<div >
+	<table id="records_table" style="width:40%">
+  <tr>
+    <th>Soda Name</th>
+    <th>Quantity</th> 
+  </tr>
+  <tr>
+    <td></td>
+    <td></td> 
+  </tr>
+</table>
+</div>
 </body>
 </html>
