@@ -4,6 +4,7 @@
 var express = require('express');
 var ParseServer = require('parse-server').ParseServer;
 var path = require('path');
+var jquery = require("jquery");
 
 var databaseUri = process.env.DATABASE_URI || 'mongodb://heroku_rtzfhkmq:go3abk4dfibc9gniqndvoclhdd@ds133328.mlab.com:33328/heroku_rtzfhkmq';
 
@@ -92,20 +93,45 @@ app.get('/inventory', function(req, res) {
   // limits the results by the criteria
   // query.greaterThan("sodaQuantity", 0);
   query.find({
-    success: function(results) {
-      console.log("Successfully retrieved " + results.length + " Sodas");
+    success: function(feeds) {
+      var jsonArray = [];
+      // console.log("Successfully retrieved " + results.length + " Sodas");
       // Do something with the returned Parse.Object values
-      for (var i = 0; i < results.length; i++) {
-        var object = results[i];
-        console.log(object.id + ' - ' + object.get('sodaName') + ' - ' + object.get('sodaQuantity'));
-        res.sendStatus(200);
-      }
+      for (var i = 0; i < feeds.length; i++) {
+           jsonArray.push(feeds[i].toJSON());
+           console.log(jsonArray);
+      } 
+      // res.sendStatus(200);
+      res.json(jsonArray);
     },
     error: function(error) {
       alert("Error: " + error.code + " " + error.message);
     }
   });
 });
+
+// Get a list of names and quantities of all the SupernaturalSodas
+// app.get('/inventory', function(req, res) {
+//   // creates new search
+//   var query = new Parse.Query(SupernaturalSodas);
+//   // limits the results by the criteria
+//   // query.greaterThan("sodaQuantity", 0);
+//   query.find({
+//     success: function(supernaturalsodas) {
+//       supernaturalsodas = supernaturalsodas.map(function(supernaturalsoda) {
+//         return supernaturalsoda.toJSON();
+//       }),
+
+//       console.log('supernaturalsodas post .toJSON()', supernaturalsodas);
+
+//       // Return the JSON to frontend:
+//       response.success(supernaturalsodas);
+//     },
+//     error: function(error) {
+//       alert("Error: " + error.code + " " + error.message);
+//     }
+//   });
+// });
 
 
 

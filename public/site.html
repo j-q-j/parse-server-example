@@ -1,30 +1,33 @@
+<!DOCTYPE html>
 <html>
 <head>
-    <!doctype html>
-    <meta charset=”utf-8”>
-    <title>Supernatural Sodas</title>
+<meta charset=”utf-8”>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script >
+$.getJSON("/inventory", function(data) {
+    // Get the element with id summary and set the inner text to the result.
+    $('#sodainventory').text(JSON.stringify(data));
+    console.log(data);
+});	
+</script>
 </head>
 <body>
-    <div style="color:#0000FF">
-    	<h2>Add a soda to the inventory</h2>
-    	<p>Every soda must have a name and a quantity.<p>
-    	<form action="/save" method="post">
-    		Soda Name:<br>
-    		<input type="text" name="sodaName"><br>
-    		Quantity:<br>
-    		<input type="number" name="sodaQuantity"><br>
-    		<input type="submit" value="Add It"><br><br>
-    	</form>
-    </div>
-    <p>
-    <p>
-    <div style="color:#0000FF">
-    	<h2> All of the sodas available now</h2>
-    	<p>
-    	<form action="/inventory" method="get">
-    		<input type="submit" value="Check the stock">
-    		<br><br>
-    	</form>
-    </div>
+<title>Supernatural Sodas</title>
+<div style="color:#0000FF">
+    <h2>Add a soda to the inventory</h2>
+    <p>Every soda must have a name and a quantity.<p>
+    <form action="/save" method="post">
+    	Soda Name:<br>
+    	<input type="text" name="sodaName"><br>
+    	Quantity:<br>
+    	<input type="number" name="sodaQuantity"><br>
+    	<input type="submit" value="Add It"><br><br>
+    </form>
+</div>
+<p>
+<p>
+<h2> All of the sodas available now</h2>
+<p>
+<div id="sodainventory"></div>
 </body>
 </html>
