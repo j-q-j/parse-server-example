@@ -5,7 +5,7 @@ var express = require('express');
 var ParseServer = require('parse-server').ParseServer;
 var path = require('path');
 var jquery = require("jquery");
-var jquery.tabulator = require ("jquery.tabulator");
+var Pusher = require('pusher');
 
 var databaseUri = process.env.DATABASE_URI || 'mongodb://heroku_rtzfhkmq:go3abk4dfibc9gniqndvoclhdd@ds133328.mlab.com:33328/heroku_rtzfhkmq';
 
@@ -22,6 +22,13 @@ var api = new ParseServer({
 // Client-keys like the javascript key or the .NET key are not necessary with parse-server
 // If you wish you require them, you can set them as options in the initialization above:
 // javascriptKey, restAPIKey, dotNetKey, clientKey
+
+var pusher = new Pusher({
+  appId: '310535',
+  key: '1e3d02f7d556d73e3888',
+  secret: '4afe659880e146c9ff2a',
+  encrypted: true
+});
 
 if (!databaseUri) {
   console.log('DATABASE_URI not specified, falling back to localhost.');
@@ -64,28 +71,32 @@ ParseServer.createLiveQueryServer(httpServer);
 
 // Creat class Supernatural Sodas
 var SupernaturalSodas = Parse.Object.extend("SupernaturalSodas"); 
-// Process equest to create a new supernaturalSodas
+
+
+// Process equest to create a new supernaturalSoda
 app.post('/save', function(req, res) {
   // create new instance of Class
-  var supernaturalSodas = new SupernaturalSodas();
+  var supernaturalSoda = new SupernaturalSodas();
   // write attributes to instance of class
   for (object in req.body) {
-        supernaturalSodas.set(object, req.body[object]);
+    supernaturalSoda.set(object, req.body[object]);
   }
   // save class instance
-  supernaturalSodas.save(null, {
-    success: function(supernaturalSodas) {
-      // Execute any logic that should take place after the object is saved.
-      console.log(supernaturalSodas);
-      res.sendStatus(200);
+  supernaturalSoda.save(null, {
+    success: function(supernaturalSoda) {
+        // Execute any logic that should take place after the object is saved
+        
+        res.sendStatus(200);
+        pusher.trigger('sodas', 'test_event', jsonArray);
     },
-    error: function(supernaturalSodas, error) {
+    error: function(supernaturalSoda, error) {
        // Execute any logic that should take place if the save fails.
       // error is a Parse.Error with an error code and message.
       console.log('Failed to create new object, with error code: ' + error.message);
     }
   });
 });
+
 
 // Get a list of names and quantities of all the SupernaturalSodas
 app.get('/inventory', function(req, res) {
@@ -110,6 +121,8 @@ app.get('/inventory', function(req, res) {
     }
   });
 });
+
+
 
 // Get a list of names and quantities of all the SupernaturalSodas
 // app.get('/inventory', function(req, res) {

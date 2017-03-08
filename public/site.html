@@ -10,20 +10,38 @@ table, th, td {
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-
 <script>
 $.getJSON("/inventory", function(data) {
     // Get the element with id summary and set the inner text to the result.
 	response = $.parseJSON(JSON.stringify(data));
 	$.each(response, function(i, item) {
     	$('<tr>').html("<td>" + response[i].sodaName + "</td><td>" + response[i].sodaQuantity + "</td>").appendTo('#records_table');
-});
+	});
 });
 </script>
+<script src="https://js.pusher.com/4.0/pusher.min.js"></script>
+  <script>
+
+    // Enable pusher logging - don't include this in production
+    Pusher.logToConsole = true;
+
+    var pusher = new Pusher('1e3d02f7d556d73e3888', {
+      encrypted: true
+    });
+
+    var channel = pusher.subscribe('sodas');
+    channel.bind('test_event', function(data) {
+		response = $.parseJSON(JSON.stringify(data));
+		$.each(response, function(i, item) {
+    		$('<tr>').html("<td>" + response[i].sodaName + "</td><td>" + response[i].sodaQuantity + "</td>").appendTo('#records_table');
+    		}
+    }
+	}
+  </script>
 </head>
 <body>
 <title>Supernatural Sodas</title>
-<div style="color:#0000FF">
+<div class="col-sm-6 col-sm-offset-3" style="color:#0000FF">
     <h2>Add a soda to the inventory</h2>
     <p>Every soda must have a name and a quantity.<p>
     <form action="/save" method="post">
@@ -49,6 +67,8 @@ $.getJSON("/inventory", function(data) {
     <td></td> 
   </tr>
 </table>
+</div>
+<div id="pusherSodas">
 </div>
 </body>
 </html>
